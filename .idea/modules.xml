@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativeapp.iml" filepath="$PROJECT_DIR$/nativeapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativecommon/cpufeatures/nativecommon_cpufeatures.iml" filepath="$PROJECT_DIR$/nativecommon/cpufeatures/nativecommon_cpufeatures.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativecommon/jui_java/nativecommon_jui_java.iml" filepath="$PROJECT_DIR$/nativecommon/jui_java/nativecommon_jui_java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativecommon/native_app_glue/nativecommon_native_app_glue.iml" filepath="$PROJECT_DIR$/nativecommon/native_app_glue/nativecommon_native_app_glue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" filepath="$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" />
+    </modules>
+  </component>
+</project>
