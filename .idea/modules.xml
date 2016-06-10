@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/nativecommon/jui_java/nativecommon_jui_java.iml" filepath="$PROJECT_DIR$/nativecommon/jui_java/nativecommon_jui_java.iml" />
       <module fileurl="file://$PROJECT_DIR$/nativecommon/native_app_glue/nativecommon_native_app_glue.iml" filepath="$PROJECT_DIR$/nativecommon/native_app_glue/nativecommon_native_app_glue.iml" />
       <module fileurl="file://$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" filepath="$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" filepath="$PROJECT_DIR$/nativecommon/prebuild/nativecommon_prebuild.iml" />
     </modules>
   </component>
 </project>

@@ -325,7 +325,7 @@ void android_main(android_app *state) {
   app_dummy();
 
   g_engine.SetState(state);
-
+  u_con("Hello LibU world !");
   // Init helper functions
   ndk_helper::JNIHelper::Init(state->activity, HELPER_CLASS_NAME,
                               HELPER_CLASS_SONAME);
