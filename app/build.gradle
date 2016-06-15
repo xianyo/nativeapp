@@ -9,10 +9,17 @@ def stllinkType = "static"
 model {
     repositories {
         libs(PrebuiltLibraries) {
-            libu {
+            libu_static {
                 headers.srcDir "${prebuild_path}/libu/include"
                 binaries.withType(StaticLibraryBinary) {
                     staticLibraryFile = file("${prebuild_path}/libu/lib/libu.a")
+                }
+            }
+
+            libu {
+                headers.srcDir "${prebuild_path}/libu/include"
+                binaries.withType(SharedLibraryBinary) {
+                    sharedLibraryFile = file("${prebuild_path}/libu/lib/libu.so")
                 }
             }
         }
@@ -31,7 +38,8 @@ model {
         main {
             jni {
                 dependencies {
-                    library "libu" linkage "static"
+                    library "libu" linkage "shared"
+                    //library "libu_static" linkage "static"
                     project ":nativecommon/cpufeatures" linkage "static"
                     project ":nativecommon/native_app_glue" linkage "static"
                 }
@@ -39,6 +47,12 @@ model {
                     srcDir 'src/main/jni'
                     srcDir '../nativecommon/ndk_helper'
                     srcDir '../nativecommon/jui_helper'
+                }
+            }
+
+            jniLibs {
+                dependencies {
+                    library "libu"
                 }
             }
         }

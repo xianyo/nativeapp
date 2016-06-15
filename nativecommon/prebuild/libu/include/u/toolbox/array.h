@@ -197,10 +197,10 @@ void *u_array_get_ptr (u_array_t *da, size_t idx, int *prc);
 
 #ifdef HAVE__BOOL
 /** \brief  Setter for the \c _Bool type */
-int u_array_set_bool (u_array_t *da, size_t idx, _Bool v, _Bool *pold);
+int u_array_set_bool (u_array_t *da, size_t idx, bool v, bool *pold);
 
 /** \brief  Getter for the \c _Bool type */
-int u_array_get_bool (u_array_t *da, size_t idx, _Bool *pv);
+int u_array_get_bool (u_array_t *da, size_t idx, bool *pv);
 #endif  /* HAVE__BOOL */
 
 #ifdef HAVE_LONG_LONG

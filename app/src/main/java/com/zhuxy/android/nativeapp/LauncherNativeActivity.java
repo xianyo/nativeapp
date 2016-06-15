@@ -7,6 +7,7 @@ import android.app.NativeActivity;
  */
 public class LauncherNativeActivity extends NativeActivity {
     static {
+        System.loadLibrary("u");
         System.loadLibrary("nativeapp");
     }
 

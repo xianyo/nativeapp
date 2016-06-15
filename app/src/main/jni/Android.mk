@@ -9,7 +9,8 @@ LOCAL_CFLAGS :=
 LOCAL_CPPFLAGS := -std=c++11
 
 LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -latomic -lz
-LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue ndk_helper jui_helper libu
+LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue ndk_helper jui_helper
+LOCAL_SHARED_LIBRARIES := libu
 
 #hard-fp setting
 ifneq ($(filter %armeabi-v7a,$(TARGET_ARCH_ABI)),)

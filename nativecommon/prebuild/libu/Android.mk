@@ -1,7 +1,13 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := libu
+LOCAL_MODULE := libu_static
 LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/libu.a
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
 include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := libu
+LOCAL_SRC_FILES := $(LOCAL_PATH)/lib/libu.so
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/include
+include $(PREBUILT_SHARED_LIBRARY)
