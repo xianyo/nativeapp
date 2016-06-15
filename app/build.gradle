@@ -3,7 +3,7 @@ apply plugin: 'com.android.model.application'
 def prebuild_path = file(project(':nativecommon/prebuild').projectDir).absolutePath
 
 // stlport configuration ["c++_static", "c++_shared", "gnustl_static", "gnustl_shared"]
-def stlportType = "c++"
+def stlportType = "gnustl"
 def stllinkType = "static"
 
 model {
