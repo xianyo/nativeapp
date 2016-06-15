@@ -1,0 +1,38 @@
+apply plugin: "com.android.model.native"
+
+
+
+
+model {
+    android {
+        compileSdkVersion = 23
+    }
+
+    android.ndk {
+        platformVersion = 11
+        moduleName = "ndk_helper"
+        toolchain = "clang"
+        stl = "c++_static"
+        ldLibs.addAll(["atomic", "log", "android", "EGL", "GLESv2"])
+        abiFilters.addAll(["armeabi"])
+        cppFlags.add("-std=c++11")
+    }
+
+    android.sources {
+        main {
+            jni {
+                dependencies {
+                    project ":nativecommon/cpufeatures" linkage "static"
+                    project ":nativecommon/native_app_glue" linkage "static"
+                }
+
+                exportedHeaders {
+                    srcDir "jni"
+                }
+                source {
+                    srcDir "jni"
+                }
+            }
+        }
+    }
+}

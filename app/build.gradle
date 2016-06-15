@@ -38,15 +38,17 @@ model {
         main {
             jni {
                 dependencies {
-                    library "libu" linkage "shared"
-                    //library "libu_static" linkage "static"
                     project ":nativecommon/cpufeatures" linkage "static"
                     project ":nativecommon/native_app_glue" linkage "static"
+
+                    library "libu" linkage "shared"
+                    //library "libu_static" linkage "static"
+                    project ":nativecommon/JNIHelper" linkage "shared"
+                    project ":nativecommon/ndk_helper" linkage "shared"
+                    project ":nativecommon/jui_helper" linkage "shared"
                 }
                 source {
                     srcDir 'src/main/jni'
-                    srcDir '../nativecommon/ndk_helper'
-                    srcDir '../nativecommon/jui_helper'
                 }
             }
 
@@ -63,9 +65,7 @@ model {
         stl = "${stlportType}_${stllinkType}"
         ldLibs.addAll(["atomic", "log", "android", "EGL", "GLESv2", "z"])
         abiFilters.addAll(["armeabi"])
-        cppFlags.addAll(["-std=c++11",
-                         "-I${file("../nativecommon/ndk_helper")}".toString(),
-                         "-I${file("../nativecommon/jui_helper")}".toString() ])
+        cppFlags.addAll(["-std=c++11"])
     }
     android.buildTypes {
         release {

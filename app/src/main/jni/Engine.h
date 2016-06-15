@@ -14,6 +14,7 @@
 #include <JavaUI.h>
 #include <u/libu.h>
 #include <NDKHelper.h>
+#include <JNIHelper.hpp>
 
 /*
  * Preprocessors

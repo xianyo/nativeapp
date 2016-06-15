@@ -11,9 +11,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/nativecommon/JNIHelper" />
             <option value="$PROJECT_DIR$/nativecommon/cpufeatures" />
+            <option value="$PROJECT_DIR$/nativecommon/jui_helper" />
             <option value="$PROJECT_DIR$/nativecommon/jui_java" />
             <option value="$PROJECT_DIR$/nativecommon/native_app_glue" />
+            <option value="$PROJECT_DIR$/nativecommon/ndk_helper" />
             <option value="$PROJECT_DIR$/nativecommon/prebuild" />
           </set>
         </option>

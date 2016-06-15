@@ -1,0 +1,32 @@
+apply plugin: "com.android.model.native"
+
+
+
+
+model {
+    android {
+        compileSdkVersion = 23
+    }
+
+    android.ndk {
+        moduleName = "JNIHelper"
+        toolchain = "clang"
+        stl = "c++_static"
+        ldLibs.addAll(["log", "android"])
+        abiFilters.addAll(["armeabi"])
+        cppFlags.add("-std=c++11")
+    }
+
+    android.sources {
+        main {
+            jni {
+                exportedHeaders {
+                    srcDir "jni"
+                }
+                source {
+                    srcDir "jni"
+                }
+            }
+        }
+    }
+}

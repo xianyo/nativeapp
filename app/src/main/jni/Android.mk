@@ -9,8 +9,8 @@ LOCAL_CFLAGS :=
 LOCAL_CPPFLAGS := -std=c++11
 
 LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -latomic -lz
-LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue ndk_helper jui_helper
-LOCAL_SHARED_LIBRARIES := libu
+LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue 
+LOCAL_SHARED_LIBRARIES := libu ndk_helper jui_helper JNIHelper
 
 #hard-fp setting
 ifneq ($(filter %armeabi-v7a,$(TARGET_ARCH_ABI)),)
@@ -27,8 +27,9 @@ endif
 include $(BUILD_SHARED_LIBRARY)
 
 $(call import-add-path,$(LOCAL_PATH)/../../../../nativecommon)
-$(call import-module,ndk_helper)
-$(call import-module,jui_helper)
+$(call import-module,ndk_helper/jni)
+$(call import-module,jui_helper/jni)
+$(call import-module,JNIHelper/jni)
 $(call import-module,prebuild/libu)
 $(call import-module,android/native_app_glue)
 $(call import-module,android/cpufeatures)

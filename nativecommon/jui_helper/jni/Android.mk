@@ -2,22 +2,17 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE:= ndk_helper
-LOCAL_SRC_FILES:= JNIHelper.cpp \
- interpolator.cpp \
- tapCamera.cpp \
- gestureDetector.cpp \
- perfMonitor.cpp \
- vecmath.cpp \
- GLContext.cpp \
- shader.cpp \
- gl3stub.cpp \
- sensorManager.cpp
+LOCAL_MODULE:= jui_helper
+LOCAL_SRC_FILES:= $(LOCAL_PATH)/JavaUI.cpp \
+ $(LOCAL_PATH)/JavaUI_Toast.cpp \
+ $(LOCAL_PATH)/JavaUI_Window.cpp \
+ $(LOCAL_PATH)/JavaUI_Dialog.cpp \
+ $(LOCAL_PATH)/JavaUI_Layouts.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
-LOCAL_EXPORT_LDLIBS := -llog -landroid -lEGL -lGLESv2
+LOCAL_EXPORT_LDLIBS := -llog -landroid
 
-LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue
+LOCAL_SHARED_LIBRARIES := ndk_helper
 
 LOCAL_CFLAGS += -std=c++11
 
@@ -34,4 +29,6 @@ LOCAL_EXPORT_LDFLAGS += -Wl,--no-warn-mismatch
 endif
 endif
 
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
+
+$(call import-module,ndk_helper/jni)

@@ -7,6 +7,9 @@ import android.app.NativeActivity;
  */
 public class LauncherNativeActivity extends NativeActivity {
     static {
+        System.loadLibrary("ndk_helper");
+        System.loadLibrary("jui_helper");
+        System.loadLibrary("JNIHelper");
         System.loadLibrary("u");
         System.loadLibrary("nativeapp");
     }

@@ -2,16 +2,24 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE:= JNIHelper
-LOCAL_SRC_FILES:= _android/core/JNIEnvironment.cpp \
-			_android/core/jnienv.cpp \
-		  _android/native/JavaNativeMethod.cpp \
-		  _android/utils/JavaObjectPointer.cpp \
-		  _android/utils/JStringUtils.cpp \
-	          
+LOCAL_MODULE:= ndk_helper
+LOCAL_SRC_FILES:= $(LOCAL_PATH)/JNIHelper.cpp \
+ $(LOCAL_PATH)/interpolator.cpp \
+ $(LOCAL_PATH)/tapCamera.cpp \
+ $(LOCAL_PATH)/gestureDetector.cpp \
+ $(LOCAL_PATH)/perfMonitor.cpp \
+ $(LOCAL_PATH)/vecmath.cpp \
+ $(LOCAL_PATH)/GLContext.cpp \
+ $(LOCAL_PATH)/shader.cpp \
+ $(LOCAL_PATH)/gl3stub.cpp \
+ $(LOCAL_PATH)/sensorManager.cpp
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
-LOCAL_EXPORT_LDLIBS := -llog -landroid
+LOCAL_EXPORT_LDLIBS := -latomic -llog -landroid -lEGL -lGLESv2
+
+LOCAL_LDLIBS := -latomic -llog -landroid -lEGL -lGLESv2
+
+LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue
 
 LOCAL_CFLAGS += -std=c++11
 
@@ -28,5 +36,4 @@ LOCAL_EXPORT_LDFLAGS += -Wl,--no-warn-mismatch
 endif
 endif
 
-include $(BUILD_STATIC_LIBRARY)
-
+include $(BUILD_SHARED_LIBRARY)

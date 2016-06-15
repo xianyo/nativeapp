@@ -2,4 +2,7 @@ include ':app',
         ':nativecommon/cpufeatures',
         ':nativecommon/native_app_glue',
         ':nativecommon/prebuild',
-        ':nativecommon/jui_java'
+        ':nativecommon/jui_java',
+        ':nativecommon/JNIHelper',
+        ':nativecommon/jui_helper',
+        ':nativecommon/ndk_helper'

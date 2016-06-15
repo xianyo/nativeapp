@@ -2,17 +2,18 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE:= jui_helper
-LOCAL_SRC_FILES:= JavaUI.cpp \
- JavaUI_Toast.cpp \
- JavaUI_Window.cpp \
- JavaUI_Dialog.cpp \
- JavaUI_Layouts.cpp
+LOCAL_MODULE:= JNIHelper
+LOCAL_SRC_FILES:= $(LOCAL_PATH)/_android/core/JNIEnvironment.cpp \
+			$(LOCAL_PATH)/_android/core/jnienv.cpp \
+		  $(LOCAL_PATH)/_android/native/JavaNativeMethod.cpp \
+		  $(LOCAL_PATH)/_android/utils/JavaObjectPointer.cpp \
+		  $(LOCAL_PATH)/_android/utils/JStringUtils.cpp 
+	          
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)
 LOCAL_EXPORT_LDLIBS := -llog -landroid
 
-LOCAL_STATIC_LIBRARIES := ndk_helper
+LOCAL_LDLIBS := -llog -landroid
 
 LOCAL_CFLAGS += -std=c++11
 
@@ -29,6 +30,5 @@ LOCAL_EXPORT_LDFLAGS += -Wl,--no-warn-mismatch
 endif
 endif
 
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
 
-$(call import-module,ndk_helper)
