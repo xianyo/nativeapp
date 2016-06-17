@@ -221,14 +221,14 @@ public class NDKHelper {
      * Helper to execute function in UIThread
      */
     public void runOnUIThread(final long p) {
-        if (checkSOLoaded()) {
+        //if (checkSOLoaded()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     RunOnUiThreadHandler(p);
                 }
             });
-        }
+        //}
         return;
     }
 

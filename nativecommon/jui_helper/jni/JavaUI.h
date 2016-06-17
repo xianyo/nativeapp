@@ -31,6 +31,24 @@
 #include "JavaUI_View.h"
 #include "JavaUI_Toast.h"
 
+#define JUI_LOG_TAG  "jui_helper"//(ndk_helper::JNIHelper::GetInstance()->GetAppName())
+#undef LOGI
+#undef LOGW
+#undef LOGE
+#define LOGI(...)                                                              \
+  ((void) __android_log_print(                                                 \
+      ANDROID_LOG_INFO, JUI_LOG_TAG,    \
+      __VA_ARGS__))
+#define LOGW(...)                                                              \
+  ((void) __android_log_print(                                                 \
+      ANDROID_LOG_WARN, JUI_LOG_TAG,    \
+      __VA_ARGS__))
+#define LOGE(...)                                                              \
+  ((void) __android_log_print(                                                 \
+      ANDROID_LOG_ERROR, JUI_LOG_TAG,   \
+      __VA_ARGS__))
+
+
 /******************************************************************
  * jui_helper is a helper library to use Java UI easily from Native code.
  * With the helper, an application can instantiate Java controls such as Button,

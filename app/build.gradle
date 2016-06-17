@@ -49,6 +49,7 @@ model {
                 }
                 source {
                     srcDir 'src/main/jni'
+                    exclude 'Engine.cpp'
                 }
             }
 

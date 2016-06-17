@@ -27,20 +27,27 @@
 #include <android/log.h>
 #include <android_native_app_glue.h>
 
+#define JNI_LOG_TAG  "jni_helper"//(ndk_helper::JNIHelper::GetInstance()->GetAppName())
+
+#undef LOGI
+#undef LOGW
+#undef LOGE
+
 #define LOGI(...)                                                              \
   ((void) __android_log_print(                                                 \
-      ANDROID_LOG_INFO, ndk_helper::JNIHelper::GetInstance()->GetAppName(),    \
+      ANDROID_LOG_INFO, JNI_LOG_TAG,    \
       __VA_ARGS__))
 #define LOGW(...)                                                              \
   ((void) __android_log_print(                                                 \
-      ANDROID_LOG_WARN, ndk_helper::JNIHelper::GetInstance()->GetAppName(),    \
+      ANDROID_LOG_WARN, JNI_LOG_TAG,    \
       __VA_ARGS__))
 #define LOGE(...)                                                              \
   ((void) __android_log_print(                                                 \
-      ANDROID_LOG_ERROR, ndk_helper::JNIHelper::GetInstance()->GetAppName(),   \
+      ANDROID_LOG_ERROR, JNI_LOG_TAG,   \
       __VA_ARGS__))
 
 namespace ndk_helper {
+
 
 class JUIView;
 

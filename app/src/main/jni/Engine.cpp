@@ -16,10 +16,9 @@
 /*
  * Include files
  */
+#include <android/native_activity.h>
 #include "Engine.h"
 
-const int SELECTION_PER_QUESTION = 4;
-const int MATH_GRADE_LEVEL = 2;
 /*
  * Ctor
  */
@@ -27,17 +26,15 @@ Engine::Engine()
     : initialized_resources_(false),
       has_focus_(false),
       app_(nullptr),
-      dialog_(nullptr),
-      status_text_(nullptr) {
-  gl_context_ = ndk_helper::GLContext::GetInstance();
-  memset(ui_buttons_, 0, sizeof(ui_buttons_));
+      dialog_(nullptr){
+  //gl_context_ = ndk_helper::GLContext::GetInstance();
 }
 
 /*
  * Dtor
  */
 Engine::~Engine() {
-
+  LOGI("~Engine");
   jui_helper::JUIWindow::GetInstance()->Close();
   delete dialog_;
 }
@@ -47,44 +44,44 @@ Engine::~Engine() {
  */
 void Engine::InitDisplay(const int32_t cmd) {
   if (!initialized_resources_) {
-    gl_context_->Init(app_->window);
+   // gl_context_->Init(app_->window);
     InitUI();
     initialized_resources_ = true;
   } else {
-    if (EGL_SUCCESS != gl_context_->Resume(app_->window)) {
-      LOGE("Failed To Re-Initialize OpenGL functions");
-    }
+    //if (EGL_SUCCESS != gl_context_->Resume(app_->window)) {
+    //  LOGE("Failed To Re-Initialize OpenGL functions");
+    //}
 
     jui_helper::JUIWindow::GetInstance()->Resume(app_->activity, cmd);
   }
 
   // Enable culling OpenGL state
-  glEnable(GL_CULL_FACE);
+  //glEnable(GL_CULL_FACE);
 
   // Enabled depth test OpenGL state
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LEQUAL);
+  //glEnable(GL_DEPTH_TEST);
+  //glDepthFunc(GL_LEQUAL);
 
   // Note that screen size might have been changed
-  glViewport(0, 0, gl_context_->GetScreenWidth(),
-             gl_context_->GetScreenHeight());
+  //glViewport(0, 0, gl_context_->GetScreenWidth(),
+        //     gl_context_->GetScreenHeight());
 }
 
 /**
  * Just the current frame in the display.
  */
 void Engine::DrawFrame() {
-  float bkColor = .5f;
-  glClearColor(bkColor, bkColor, bkColor, 1.f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  gl_context_->Swap();
+  //float bkColor = .5f;
+  //glClearColor(bkColor, bkColor, bkColor, 1.f);
+  //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //gl_context_->Swap();
 }
 
 /**
  * Tear down the EGL context currently associated with the display.
  */
 void Engine::TermDisplay(const int32_t cmd) {
-  gl_context_->Suspend();
+  //gl_context_->Suspend();
   jui_helper::JUIWindow::GetInstance()->Suspend(cmd);
 }
 
@@ -94,6 +91,8 @@ void Engine::TermDisplay(const int32_t cmd) {
  */
 int32_t Engine::HandleInput(android_app *app, AInputEvent *event) {
   Engine *eng = reinterpret_cast<Engine *> (app->userData);
+
+
   return 0;
 }
 
@@ -105,12 +104,14 @@ void Engine::HandleCmd(struct android_app *app, int32_t cmd) {
   LOGI("message %d", cmd);
   switch (cmd) {
     case APP_CMD_INIT_WINDOW:
+      LOGI("APP_CMD_INIT_WINDOW");
       if (app->window != NULL) {
         eng->InitDisplay(APP_CMD_INIT_WINDOW);
         eng->DrawFrame();
       }
       break;
     case APP_CMD_TERM_WINDOW:
+      LOGI("APP_CMD_TERM_WINDOW");
       // Disconnect all connections before going down
 
       // Note that JUI helper needs to know if a window has been terminated
@@ -118,31 +119,39 @@ void Engine::HandleCmd(struct android_app *app, int32_t cmd) {
       eng->has_focus_ = false;
       break;
     case APP_CMD_RESUME:
+      LOGI("APP_CMD_RESUME");
       jui_helper::JUIWindow::GetInstance()->Resume(app->activity,
                                                    APP_CMD_RESUME);
       // Players need re-connect since we teared down the connection when we
       // went suspension
-      eng->EnableUI(true);
+      //eng->EnableUI(true);
       break;
     case APP_CMD_GAINED_FOCUS:
+      LOGI("APP_CMD_GAINED_FOCUS");
       // Start animation
       eng->has_focus_ = true;
       jui_helper::JUIWindow::GetInstance()->Resume(app->activity,
                                                    APP_CMD_GAINED_FOCUS);
       break;
     case APP_CMD_LOST_FOCUS:
+      LOGI("APP_CMD_LOST_FOCUS");
       // Also stop animating.
       eng->has_focus_ = false;
       eng->DrawFrame();
       break;
     case APP_CMD_CONFIG_CHANGED:
+      LOGI("APP_CMD_CONFIG_CHANGED");
       // Configuration changes
       eng->TermDisplay(APP_CMD_CONFIG_CHANGED);
       eng->InitDisplay(APP_CMD_CONFIG_CHANGED);
       break;
     case APP_CMD_DESTROY:
+      LOGI("APP_CMD_DESTROY");
       ndk_helper::JNIHelper::GetInstance()->DetachCurrentThread();
       break;
+    default:
+      LOGI("other cmd");
+          break;
   }
 }
 
@@ -167,8 +176,6 @@ bool Engine::IsReady() {
  */
 void Engine::InitUI() {
 
-  const int32_t LEFT_MARGIN = 20;
-
   // The window initialization
   jui_helper::JUIWindow::Init(app_->activity, JUIHELPER_CLASS_NAME);
 
@@ -186,65 +193,31 @@ void Engine::InitUI() {
     win_height = tmp;
   }
 
-  int32_t button_raw_width = win_width / 4;  // we have 4 buttons
-  int32_t button_height = win_height / 4;
-  int cur_idx = 0;
-
-  // Create 4 buttons to control nearby sign-in
-  // The sequence is dictated by enum BUTTON_INDEX,
-  // it MUST match the button titles array defined here
-  const char *titles[UI_BUTTON_COUNT] = {"Advertise", "Discover", "Play Game",
-                                         "Stop"};
-  std::function<void(jui_helper::JUIView *, const int32_t)> button_handlers[] = {
+  std::function<void(jui_helper::JUIView *, const int32_t)> button_handler = {
           [this](jui_helper::JUIView *button, const int32_t msg) {
-            if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
-              LOGE("button 0 ");
-            }
-          },
-          [this](jui_helper::JUIView *button, const int32_t msg) {
-            if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
-              LOGE("button 1 ");
-            }
-          },
-          [this](jui_helper::JUIView *button, const int32_t msg) {
-            if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
-              LOGE("button 2  ");
-            }
-          },
-          [this](jui_helper::JUIView *button, const int32_t msg) {
-            if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
-              LOGE("button 3  ");
-            }
-          },
-      };
+              if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
+                LOGE("button 0 ");
+                //running_=false;
+                //has_focus_ = false;
 
-  for (cur_idx = 0; cur_idx < UI_BUTTON_COUNT; cur_idx++) {
+                ANativeActivity_finish(app_->activity);
+              }
+          }
+  };
 
-    jui_helper::JUIButton *button = new jui_helper::JUIButton(titles[cur_idx]);
-    button->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_VERTICAL,
-                    jui_helper::LAYOUT_PARAMETER_TRUE);
-    button->AddRule(jui_helper::LAYOUT_PARAMETER_ALIGN_PARENT_LEFT,
-                    jui_helper::LAYOUT_PARAMETER_TRUE);
-    button->SetAttribute("MinimumWidth", button_raw_width - LEFT_MARGIN);
-    button->SetAttribute("MinimumHeight", button_height);
-    button->SetMargins(LEFT_MARGIN + cur_idx * button_raw_width, 0, 0, 0);
-    button->SetCallback(button_handlers[cur_idx]);
+  jui_helper::JUIButton *button = new jui_helper::JUIButton("main");
+  button->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
+                  jui_helper::LAYOUT_PARAMETER_TRUE);
+  button->SetCallback(button_handler);
 
-    jui_helper::JUIWindow::GetInstance()->AddView(button);
-    ui_buttons_[cur_idx] = button;
+  button->SetAttribute(
+                  "Enabled",
+                  true);
+  ui_button = button;
+  jui_helper::JUIWindow::GetInstance()->AddView(button);
 
-  }
+  //EnableUI(true);
 
-  status_text_ = new jui_helper::JUITextView("Nearby Connection is Idle");
-  status_text_->AddRule(jui_helper::LAYOUT_PARAMETER_ALIGN_PARENT_BOTTOM,
-                        jui_helper::LAYOUT_PARAMETER_TRUE);
-  status_text_->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
-                        jui_helper::LAYOUT_PARAMETER_TRUE);
-  status_text_->SetAttribute("TextSize", jui_helper::ATTRIBUTE_UNIT_SP, 17.f);
-  jui_helper::JUIWindow::GetInstance()->AddView(status_text_);
-
-  EnableUI(true);
-  LOGI("ui end ... ");
   return;
 }
 
@@ -254,66 +227,19 @@ void Engine::InitUI() {
 void Engine::EnableUI(bool enable) {
   LOGI("Updating UI:%d", enable);
   ndk_helper::JNIHelper::GetInstance()->RunOnUiThread([this, enable]() {
-    ui_buttons_[BUTTON_ADVERTISE]->SetAttribute(
-        "Enabled",
-        enable);
-    ui_buttons_[BUTTON_DISCOVER]->SetAttribute(
-        "Enabled",
-        enable );
-    ui_buttons_[BUTTON_PLAY_GAME]->SetAttribute(
-        "Enabled", enable);
-    /*
-     * For experimental purpose, Stop button is always enabled
-     */
-    ui_buttons_[BUTTON_STOP]->SetAttribute("Enabled", true);
-
-    std::string str;
-    str += "Nearby Connection Status: Connected Clients = ";
-
-    str = str.substr(0, str.size() - 2);
-    status_text_->SetAttribute("Text", const_cast<const char *>(str.c_str()));
+      ui_button->SetAttribute(
+              "Enabled",
+              enable);
   });
 }
 
-/*
- * Help function to create(multiple choice buttons)
- */
-jui_helper::JUIButton *Engine::CreateChoiceButton(const char *cap,
-                                                  jui_helper::JUIButton *left,
-                                                  float fontSize) {
-  jui_helper::JUIButton *button = new jui_helper::JUIButton(cap);
-  if (!button) {
-    LOGE("Out of Memory in %s @ line %d", __FILE__, __LINE__);
-    return NULL;
-  }
-  button->SetCallback([this](jui_helper::JUIView *view, const int32_t msg) {
-    switch (msg) {
-      case jui_helper::JUICALLBACK_BUTTON_UP:
-        CheckChoice(static_cast<jui_helper::JUIButton *>(view));
+enum AndroidAppActivityResults {
+  ANDROID_APP_ACTIVITY_RESULT_CANCELED = 0,
+  ANDROID_APP_ACTIVITY_RESULT_FIRST_USER = 1,
+  ANDROID_APP_ACTIVITY_RESULT_OK = -1,
+};
 
-    }
-  });
-  if (left) button->AddRule(jui_helper::LAYOUT_PARAMETER_RIGHT_OF, left);
-  button->AddRule(jui_helper::LAYOUT_PARAMETER_BELOW, math_formula_);
-  button->SetAttribute("TextSize", jui_helper::ATTRIBUTE_UNIT_SP, fontSize);
-  button->SetAttribute("Padding", 2, 5, 2, 5);
-  button->SetMargins(0, 0, 0, 0);
-  return button;
-}
 
-/*
- * Check the selection is the correct answer and update our local score
- */
-void Engine::CheckChoice(jui_helper::JUIButton *selection) {
-  int idx = 0;
-  while (idx < CHOICES_PER_QUESTION && game_buttons_[idx] != selection) {
-    ++idx;
-  }
-}
-
-/*
- * Our global instance for Game engine
- */
 Engine g_engine;
 
 /**
@@ -322,15 +248,17 @@ Engine g_engine;
  * event loop for receiving input events and doing other things.
  */
 void android_main(android_app *state) {
-  app_dummy();
+  int result = 0;
 
-  g_engine.SetState(state);
-  u_con("Hello LibU world !");
+  app_dummy();
+  LOGI("android_main app ");
+
   // Init helper functions
-  ndk_helper::JNIHelper::Init(state->activity, HELPER_CLASS_NAME,
-                              HELPER_CLASS_SONAME);
+  ndk_helper::JNIHelper::Init(state->activity, HELPER_CLASS_NAME);
 
   state->userData = &g_engine;
+  g_engine.running_=true;
+  g_engine.SetState(state);
   state->onAppCmd = Engine::HandleCmd;
   state->onInputEvent = Engine::HandleInput;
 
@@ -352,6 +280,25 @@ void android_main(android_app *state) {
       // Check if we are exiting.
       if (state->destroyRequested != 0) {
         g_engine.TermDisplay(APP_CMD_TERM_WINDOW);
+
+
+        // Pass the return code from main back to the Activity.
+        {
+          jobject nativeActivityObject = state->activity->clazz;
+          jclass nativeActivityClass;
+          jmethodID setResult;
+          JNIEnv *env = state->activity->env;
+          int returnResult = result == 0 ? ANDROID_APP_ACTIVITY_RESULT_OK :
+                             result > 0 ? result + ANDROID_APP_ACTIVITY_RESULT_FIRST_USER :
+                             ANDROID_APP_ACTIVITY_RESULT_CANCELED;
+          state->activity->vm->AttachCurrentThread(&env, NULL);
+          nativeActivityClass = env->GetObjectClass(nativeActivityObject);
+          setResult = env->GetMethodID(nativeActivityClass, "setResult",
+                                       "(I)V");
+          env->CallVoidMethod(nativeActivityObject, setResult, returnResult);
+          state->activity->vm->DetachCurrentThread();
+        }
+
         return;
       }
     }
@@ -367,7 +314,7 @@ void android_main(android_app *state) {
 extern "C" {
 JNIEXPORT void
 Java_com_zhuxy_android_nativeapp_LauncherNativeActivity_OnPauseHandler(
-    JNIEnv *env) {
+        JNIEnv *env) {
   // This call is to suppress 'E/WindowManager(): android.view.WindowLeaked...'
   // errors.
   // Since orientation change events in NativeActivity comes later than
@@ -376,6 +323,7 @@ Java_com_zhuxy_android_nativeapp_LauncherNativeActivity_OnPauseHandler(
   // So we are releasing popupWindows explicitly triggered from Java callback
   // through JNI call.
   jui_helper::JUIWindow::GetInstance()->Suspend(APP_CMD_PAUSE);
-}
-}
 
+  LOGI("app OnPauseHandler");
+}
+}

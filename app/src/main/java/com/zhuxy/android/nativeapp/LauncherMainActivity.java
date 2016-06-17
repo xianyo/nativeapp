@@ -1,30 +1,22 @@
 package com.zhuxy.android.nativeapp;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.NativeActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 
 /**
  * Created by zhuxy on 16-6-11.
  */
-public class LauncherNativeActivity extends NativeActivity {
-    static {
-        System.loadLibrary("ndk_helper");
-        System.loadLibrary("jui_helper");
-        System.loadLibrary("JNIHelper");
-        System.loadLibrary("u");
-        System.loadLibrary("nativeapp");
-    }
+public class LauncherMainActivity extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        System.load("/sdcard/libtest.so");
-
         // Hide toolbar
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT >= 19) {
@@ -39,14 +31,20 @@ public class LauncherNativeActivity extends NativeActivity {
                         }
                     });
         }
+
+        setContentView(R.layout.activity_main);
+
+        Button btn = (Button)findViewById(R.id.dummy_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentx = new Intent(LauncherMainActivity.this,LauncherNativeActivity.class);
+                intentx.putExtra("apppath","/sdcard/libtest.so");
+                startActivity(intentx);
+            }
+        });
     }
 
-
-    public String getIntentApp(){
-        Intent intentx = getIntent();
-
-        return intentx.getStringExtra("apppath");
-    }
 
     @SuppressLint("InlinedApi")
     @SuppressWarnings("deprecation")
@@ -81,16 +79,8 @@ public class LauncherNativeActivity extends NativeActivity {
 
     protected void onPause() {
         super.onPause();
-        // This call is to suppress 'E/WindowManager():
-        // android.view.WindowLeaked...' errors.
-        // Since orientation change events in NativeActivity comes later than
-        // expected, we can not dismiss
-        // popupWindow gracefully from NativeActivity.
-        // So we are releasing popupWindows explicitly triggered from Java
-        // callback through JNI call.
-        OnPauseHandler();
 
     }
 
-    native public void OnPauseHandler();
+
 }

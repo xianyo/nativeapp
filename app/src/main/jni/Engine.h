@@ -1,3 +1,6 @@
+#ifndef ENGINE_H_
+#define ENGINE_H_
+
 #pragma once
 
 #include <jni.h>
@@ -10,11 +13,13 @@
 #include <sstream>
 #include <algorithm>
 #include <thread>
+#include <dlfcn.h>
 
 #include <JavaUI.h>
 #include <u/libu.h>
 #include <NDKHelper.h>
 #include <JNIHelper.hpp>
+#include <android/input.h>
 
 /*
  * Preprocessors
@@ -26,9 +31,6 @@
 #define JUIHELPER_CLASS_NAME "com.sample.helper.JUIHelper"
 // Share object name of helper function library
 #define HELPER_CLASS_SONAME "nativeapp"
-
-
-const int32_t CHOICES_PER_QUESTION = 4;
 
 /*
  * Engine class of the sample: my class should be IEndpointDiscoverListener()
@@ -49,17 +51,11 @@ class Engine {
   void DrawFrame();
   void TermDisplay(const int32_t cmd);
   bool IsReady();
-
+  void InitUI();
+  bool running_;
  private:
 
-
-  void InitUI();
   void EnableUI(bool enable);
-
-  jui_helper::JUIButton *CreateChoiceButton(const char *cap,
-                                            jui_helper::JUIButton *left,
-                                            float fontSize = 17.f);
-  void CheckChoice(jui_helper::JUIButton *selection);
 
   mutable std::mutex mutex_;
 
@@ -75,20 +71,16 @@ class Engine {
   // JUI dialog-related UI stuff here
   jui_helper::JUIDialog *dialog_;
 
-  enum BUTTON_INDEX {
-    BUTTON_ADVERTISE = 0,
-    BUTTON_DISCOVER,
-    BUTTON_PLAY_GAME,
-    BUTTON_STOP,
-    UI_BUTTON_COUNT
-  };
-  jui_helper::JUIButton *ui_buttons_[UI_BUTTON_COUNT];
-  jui_helper::JUITextView *status_text_;
-
-  jui_helper::JUITextView *time_text_;
-  jui_helper::JUITextView *math_formula_;
-  jui_helper::JUITextView *scores_text_;
-  jui_helper::JUIButton *game_buttons_[CHOICES_PER_QUESTION];
-
+  jui_helper::JUIButton *ui_button;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+void android_main_app(android_app *state);
+void android_main(android_app *state);
+#ifdef __cplusplus
+}
+#endif
+
+#endif
