@@ -38,7 +38,7 @@ model {
         main {
             jni {
                 dependencies {
-                    project ":nativecommon/cpufeatures" linkage "static"
+                    //project ":nativecommon/cpufeatures" linkage "static"
                     project ":nativecommon/native_app_glue" linkage "static"
 
                     library "libu" linkage "shared"
@@ -50,6 +50,7 @@ model {
                 source {
                     srcDir 'src/main/jni'
                     exclude 'Engine.cpp'
+                   // exclude 'main.cpp'
                 }
             }
 

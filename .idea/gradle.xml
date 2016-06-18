@@ -11,6 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/appdemo1" />
+            <option value="$PROJECT_DIR$/appdemo2" />
             <option value="$PROJECT_DIR$/nativecommon/JNIHelper" />
             <option value="$PROJECT_DIR$/nativecommon/cpufeatures" />
             <option value="$PROJECT_DIR$/nativecommon/jui_helper" />

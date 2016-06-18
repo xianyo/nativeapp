@@ -10,7 +10,7 @@ model {
 
     android.ndk {
         moduleName = "JNIHelper"
-        toolchain = "clang"
+        //toolchain = "clang"
         stl = "gnustl_static"
         ldLibs.addAll(["log", "android"])
         abiFilters.addAll(["armeabi"])

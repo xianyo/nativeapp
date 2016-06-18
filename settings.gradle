@@ -5,4 +5,6 @@ include ':app',
         ':nativecommon/jui_java',
         ':nativecommon/JNIHelper',
         ':nativecommon/jui_helper',
-        ':nativecommon/ndk_helper'
+        ':nativecommon/ndk_helper',
+        ':appdemo1',
+        ':appdemo2'

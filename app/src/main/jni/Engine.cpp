@@ -83,6 +83,7 @@ void Engine::DrawFrame() {
 void Engine::TermDisplay(const int32_t cmd) {
   //gl_context_->Suspend();
   jui_helper::JUIWindow::GetInstance()->Suspend(cmd);
+
 }
 
 /**
@@ -124,7 +125,7 @@ void Engine::HandleCmd(struct android_app *app, int32_t cmd) {
                                                    APP_CMD_RESUME);
       // Players need re-connect since we teared down the connection when we
       // went suspension
-      //eng->EnableUI(true);
+      eng->EnableUI(true);
       break;
     case APP_CMD_GAINED_FOCUS:
       LOGI("APP_CMD_GAINED_FOCUS");
@@ -150,7 +151,7 @@ void Engine::HandleCmd(struct android_app *app, int32_t cmd) {
       ndk_helper::JNIHelper::GetInstance()->DetachCurrentThread();
       break;
     default:
-      LOGI("other cmd");
+      LOGI("other cmd %d",cmd);
           break;
   }
 }
@@ -205,18 +206,15 @@ void Engine::InitUI() {
           }
   };
 
-  jui_helper::JUIButton *button = new jui_helper::JUIButton("main");
+  jui_helper::JUIButton *button = new jui_helper::JUIButton("main1");
   button->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
                   jui_helper::LAYOUT_PARAMETER_TRUE);
   button->SetCallback(button_handler);
 
-  button->SetAttribute(
-                  "Enabled",
-                  true);
   ui_button = button;
   jui_helper::JUIWindow::GetInstance()->AddView(button);
 
-  //EnableUI(true);
+  EnableUI(true);
 
   return;
 }

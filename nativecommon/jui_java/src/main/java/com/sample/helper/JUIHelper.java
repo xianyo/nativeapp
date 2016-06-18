@@ -147,7 +147,8 @@ public class JUIHelper {
                     dummyWindows_.remove(closingWindow);
                     closingWindow.dismiss();
                 }
-                JUIRelativeLayout_.removeView(view);
+                if ((view != null)&&(JUIHelper.this.JUIRelativeLayout_!=null))
+                    JUIRelativeLayout_.removeView(view);
             }
         });
         return;
@@ -371,7 +372,8 @@ public class JUIHelper {
                     w.dismiss();
                 }
                 dummyWindows_.clear();
-                window.dismiss();
+                if (window != null)
+                    window.dismiss();
 
                 if (dialog_ != null)
                     dialog_.dismiss();

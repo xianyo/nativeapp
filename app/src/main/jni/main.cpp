@@ -24,18 +24,18 @@
 #include <android_native_app_glue.h>
 #include <android/native_window_jni.h>
 #include <android/native_activity.h>
-#include <cpu-features.h>
 #include <sstream>
 #include <algorithm>
 #include <thread>
 #include <dlfcn.h>
+#include <android/input.h>
+#include <u/libu.h>
 
 #include <JavaUI.h>
-#include <u/libu.h>
 #include <NDKHelper.h>
 #include <JNIHelper.hpp>
 
-typedef void (*android_main_app_func)(android_app *state);
+#include "log.h"
 
 /*
  * Preprocessors
@@ -48,14 +48,40 @@ typedef void (*android_main_app_func)(android_app *state);
 // Share object name of helper function library
 #define HELPER_CLASS_SONAME "nativeapp"
 
+typedef void (*android_main_app_func)(android_app *state);
+
+
 enum AndroidAppActivityResults {
     ANDROID_APP_ACTIVITY_RESULT_CANCELED = 0,
     ANDROID_APP_ACTIVITY_RESULT_FIRST_USER = 1,
     ANDROID_APP_ACTIVITY_RESULT_OK = -1,
 };
 
-int result = 0;
-void* pHandle;
+
+static int android_main_app_func_entry(char* path, android_app* state) {
+    int result = 0;
+    void* pHandle = dlopen(path, RTLD_LAZY);  //调用驱动
+
+    if (pHandle != NULL) {
+
+        android_main_app_func func = (android_main_app_func) dlsym(pHandle, "android_main");  //得到函数句柄
+
+        if (func != NULL) {
+            LOGI("execute startup_appmain!!");
+            func(state);
+        }
+        else{
+            result = 1;
+            LOGE("dlsym err! (%s)", dlerror());
+        }
+        dlclose(pHandle);
+    }else{
+        LOGE("dlopen err! (%s)", dlerror());
+        result = 2;
+    }
+
+    return result;
+}
 
 /**
  * This is the main entry point of a native application that is using
@@ -63,6 +89,8 @@ void* pHandle;
  * event loop for receiving input events and doing other things.
  */
 void android_main(android_app *state) {
+    int result = 0;
+
   app_dummy();
   LOGI("android_main");
 
@@ -91,29 +119,12 @@ void android_main(android_app *state) {
         activity->vm->DetachCurrentThread();
     }
 
-    pHandle = dlopen(sopath, RTLD_LAZY);  //调用驱动
+    result = android_main_app_func_entry(sopath,state);
 
-    if (pHandle != NULL) {
-
-        android_main_app_func func = (android_main_app_func) dlsym(pHandle, "android_main");  //得到函数句柄
-
-        if (func != NULL) {
-            LOGI("execute startup_appmain!!");
-            func(state);
-        }
-        else{
-            result = 1;
-            LOGE("dlsym err! (%s)", dlerror());
-        }
-        dlclose(pHandle);
-    }else{
-        LOGE("dlopen err! (%s)", dlerror());
-        result = 2;
+    if(result==0){
+        activity->vm->DetachCurrentThread();
+        return;
     }
-
-    LOGI("app exit");
-
-    if(result==0)return;
 
     // Pass the return code from main back to the Activity.
     {

@@ -23,8 +23,6 @@ public class LauncherNativeActivity extends NativeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        System.load("/sdcard/libtest.so");
-
         // Hide toolbar
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT >= 19) {

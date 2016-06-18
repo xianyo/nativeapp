@@ -38,8 +38,18 @@ public class LauncherMainActivity extends Activity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intentx = new Intent(LauncherMainActivity.this, LauncherNativeActivity.class);
+                intentx.putExtra("apppath", "/data/lib/libnativeappdemo1.so");
+                startActivity(intentx);
+            }
+        });
+
+        Button btn2 = (Button)findViewById(R.id.dummy_button2);
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 Intent intentx = new Intent(LauncherMainActivity.this,LauncherNativeActivity.class);
-                intentx.putExtra("apppath","/sdcard/libtest.so");
+                intentx.putExtra("apppath","/data/lib/libnativeappdemo2.so");
                 startActivity(intentx);
             }
         });

@@ -2,14 +2,14 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := test
-LOCAL_SRC_FILES :=  Engine.cpp
+LOCAL_MODULE := nativeapp
+LOCAL_SRC_FILES :=  main.cpp
 
 LOCAL_CFLAGS :=
 LOCAL_CPPFLAGS := -std=c++11 
 
 LOCAL_LDLIBS := -llog -landroid -lEGL -lGLESv2 -latomic -lz
-LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue 
+LOCAL_STATIC_LIBRARIES := cpufeatures android_native_app_glue
 LOCAL_SHARED_LIBRARIES := libu ndk_helper jui_helper JNIHelper
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)

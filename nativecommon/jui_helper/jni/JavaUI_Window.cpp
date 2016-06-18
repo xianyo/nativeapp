@@ -199,12 +199,14 @@ void JUIWindow::Resume(ANativeActivity *activity, const int32_t cmd) {
  * Close
  */
 void JUIWindow::Close() {
-  LOGI("Closing JUI");
-  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
-      jni_helper_java_ref_, "closePopupWindow",
-      "(Landroid/widget/PopupWindow;)V", popupWindow_);
-  ndk_helper::JNIHelper::GetInstance()->DeleteObject(popupWindow_);
+      LOGI("Closing JUI");
 
+      if (popupWindow_ != NULL) {
+      ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+              jni_helper_java_ref_, "closePopupWindow",
+              "(Landroid/widget/PopupWindow;)V", popupWindow_);
+      ndk_helper::JNIHelper::GetInstance()->DeleteObject(popupWindow_);
+    }
   auto itBegin = views_.begin();
   auto itEnd = views_.end();
   while (itBegin != itEnd) {

@@ -11,6 +11,7 @@
         <activity
             android:name=".LauncherNativeActivity"
             android:label="@string/app_name"
+            android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize|keyboardHidden">
 
             <!-- Tell NativeActivity the name of or .so -->

@@ -21,6 +21,7 @@
 #include <JNIHelper.hpp>
 #include <android/input.h>
 
+#include "log.h"
 /*
  * Preprocessors
  */
