@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/appdemo1/appdemo1.iml" filepath="$PROJECT_DIR$/appdemo1/appdemo1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appdemo1/appdemo1.iml" filepath="$PROJECT_DIR$/appdemo1/appdemo1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appdemo2/appdemo2.iml" filepath="$PROJECT_DIR$/appdemo2/appdemo2.iml" />
       <module fileurl="file://$PROJECT_DIR$/appdemo2/appdemo2.iml" filepath="$PROJECT_DIR$/appdemo2/appdemo2.iml" />
       <module fileurl="file://$PROJECT_DIR$/nativeapp.iml" filepath="$PROJECT_DIR$/nativeapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/nativecommon/JNIHelper/nativecommon_JNIHelper.iml" filepath="$PROJECT_DIR$/nativecommon/JNIHelper/nativecommon_JNIHelper.iml" />

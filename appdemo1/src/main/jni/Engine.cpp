@@ -193,7 +193,7 @@ void Engine::InitUI() {
     win_width = win_height;
     win_height = tmp;
   }
-
+#if 1
   std::function<void(jui_helper::JUIView *, const int32_t)> button_handler = {
           [this](jui_helper::JUIView *button, const int32_t msg) {
               if (msg == jui_helper::JUICALLBACK_BUTTON_UP) {
@@ -207,14 +207,23 @@ void Engine::InitUI() {
   };
 
   jui_helper::JUIButton *button = new jui_helper::JUIButton("demo1");
-  button->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
-                  jui_helper::LAYOUT_PARAMETER_TRUE);
+  //button->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
+  //                jui_helper::LAYOUT_PARAMETER_TRUE);
   button->SetCallback(button_handler);
 
   ui_button = button;
   jui_helper::JUIWindow::GetInstance()->AddView(button);
 
   EnableUI(true);
+
+#else
+  jui_helper::JUIRecyclerView *recyclerView = new jui_helper::JUIRecyclerView();
+  recyclerView->AddRule(jui_helper::LAYOUT_PARAMETER_CENTER_IN_PARENT,
+                        jui_helper::LAYOUT_PARAMETER_TRUE);
+  recyclerView->initMenu(false);
+  jui_helper::JUIWindow::GetInstance()->AddView(recyclerView);
+#endif
+
 
   return;
 }

@@ -37,6 +37,8 @@ public class LauncherNativeActivity extends NativeActivity {
                         }
                     });
         }
+
+        setContentView(R.layout.activity_main);
     }
 
 
@@ -77,3 +79,5 @@ public class LauncherNativeActivity extends NativeActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
     }
 }
+
+

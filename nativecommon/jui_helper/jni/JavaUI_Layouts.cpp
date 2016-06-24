@@ -233,4 +233,36 @@ void JUIRelativeLayout::AddView(JUIView *view) {
   views_.push_back(view);
 }
 
+
+
+JUIRecyclerView::JUIRecyclerView() : JUIView() {
+  obj_ = JUIWindow::GetInstance()->CreateWidget("JUIRecyclerView", this);
+  if (obj_ == NULL)
+    LOGI("JUIRecyclerView Class initialization failure");
+}
+
+JUIRecyclerView::JUIRecyclerView(const bool b) : JUIView() {
+  if (b == true)
+    JUILinearLayout();
+}
+
+void JUIRecyclerView::initMenu(bool islist)  {
+  ndk_helper::JNIHelper::GetInstance()->CallVoidMethod(
+          obj_, "initMenu",
+          "(Z)V", islist);
+}
+
+void JUIRecyclerView::Restore() {
+  obj_ = JUIWindow::GetInstance()->CreateWidget("JUIRecyclerView", this);
+  if (obj_ == NULL)
+    LOGI("JUIRecyclerView Restore Class initialization failure");
+}
+
+JUIRecyclerView::~JUIRecyclerView() {
+  if (obj_ != NULL) {
+    jui_helper::JUIWindow::GetInstance()->CloseWidget(obj_);
+    obj_ = NULL;
+  }
+}
+
 } //namespace jui_helper

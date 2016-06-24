@@ -463,6 +463,7 @@ class JUIView : public JUIBase {
   friend class JUIToast;
   friend class JUIDialog;
   friend class JUIAlertDialog;
+  friend class JUIRecyclerView;
 
 public:
   JUIView();

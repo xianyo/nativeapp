@@ -40,7 +40,7 @@ import android.widget.RelativeLayout;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class JUIHelper {
-
+    private static final String TAG = "JUIHelper";
     public JUIHelper(NativeActivity act) {
         activity_ = act;
     }
@@ -96,16 +96,21 @@ public class JUIHelper {
         try {
             String baseName = getClass().getName().substring(0,
                     getClass().getName().lastIndexOf(".") + 1);
+            Log.d(TAG,baseName+className);
             @SuppressWarnings("rawtypes")
             Class cls = Class.forName(baseName + className);
             @SuppressWarnings("unchecked")
             Constructor<View> ctor = cls.getConstructor(NativeActivity.class);
+            Log.d(TAG,"new view");
             view = (View) ctor.newInstance(activity_);
             view.setId(id);
         } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG,"error");
+            Log.d(TAG,e.getMessage().toString());
             return null;
         }
-
+        Log.d(TAG,"init");
         initializeWidget(view);
         return view;
     }
@@ -123,6 +128,7 @@ public class JUIHelper {
             view = (View) ctor.newInstance(activity_, param);
             view.setId(id);
         } catch (Exception e) {
+
             return null;
         }
 

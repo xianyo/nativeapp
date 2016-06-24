@@ -2,29 +2,26 @@ package com.zhuxy.android.nativeapp;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.NativeActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.LayoutManager;
-import android.support.v7.widget.RecyclerView.State;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
+
+import java.util.ArrayList;
 
 /**
  * Created by zhuxy on 16-6-11.
  */
 public class LauncherMainActivity extends Activity {
-
+    private MenuAdapter menuAdapter;
+    private Activity mActivity;
+    private ArrayList<String> mDatas =new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +63,22 @@ public class LauncherMainActivity extends Activity {
                 startActivity(intentx);
             }
         });
+
+        mRecyclerView = (RecyclerView)findViewById(R.id.fullscreen_content);
+
+        mDatas.add("test1");
+        mDatas.add("test2");
+        mDatas.add("test3");
+        mDatas.add("test4");
+        mDatas.add("test5");
+        mDatas.add("test6");
+
+        menuAdapter = new MenuAdapter(this,mDatas);
+        if(true)
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        else
+            mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setAdapter(menuAdapter);
     }
 
 
@@ -106,4 +119,49 @@ public class LauncherMainActivity extends Activity {
     }
 
 
+}
+
+
+class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MyViewHolder>
+{
+    Activity mActivity;
+    private ArrayList<String> mDatas;
+
+    public MenuAdapter(final Activity activity, ArrayList<String> data) {
+        mActivity = activity;
+        mDatas = data;
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    {
+        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+                mActivity).inflate(android.R.layout.simple_list_item_1, parent,
+                false));
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, int position)
+    {
+        holder.tv.setText(mDatas.get(position));
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return mDatas.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder
+    {
+
+        TextView tv;
+
+        public MyViewHolder(View view)
+        {
+            super(view);
+            tv = (TextView) view.findViewById(android.R.id.text1);
+        }
+    }
 }

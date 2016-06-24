@@ -75,6 +75,25 @@ class JUIView;
 class JUIWindow;
 class JUIDialog;
 
+
+/*
+* JUIRecyclerView
+* Corresponding implementation for android.support.v7.widget.RecyclerView
+*/
+class JUIRecyclerView : public JUIView {
+public:
+  JUIRecyclerView();
+  virtual ~JUIRecyclerView();
+
+  void initMenu(bool islist);
+
+private:
+protected:
+  virtual void Restore();
+
+  JUIRecyclerView(const bool b);
+};
+
 /*
  * JUILinearLayout
  * Corresponding implementation for android.widget.LinearLayout
@@ -503,6 +522,7 @@ class JUIWindow {
   friend class JUIRadioGroup;
   friend class JUIToast;
   friend class JUIDialog;
+  friend class JUIRecyclerView;
 
 public:
   /*
